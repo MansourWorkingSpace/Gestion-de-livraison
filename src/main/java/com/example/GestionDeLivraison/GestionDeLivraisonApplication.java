@@ -8,6 +8,7 @@ public class GestionDeLivraisonApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GestionDeLivraisonApplication.class, args);
+        System.out.println("salah");
     }
 
 }
