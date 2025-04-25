@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -32,30 +33,41 @@ public class ClientController {
     }
 
     @PostMapping("/api/auth/loginClient")
-    public ResponseEntity<Map<String, String>> loginClient(@RequestBody Map<String, String> payload) {
-        // Retrieve email and password from the request payload
-        String email = payload.get("email");
-        String motdepasse = payload.get("motdepasse");
+    public ResponseEntity<?> loginClient(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String motdepasse = credentials.get("motdepasse");
 
-        // Check if email and password are provided
         if (email == null || motdepasse == null) {
             return new ResponseEntity<>(Map.of("message", "Email and password are required"), HttpStatus.BAD_REQUEST);
         }
 
-        // Retrieve the user from the database by email
         User user = userService.getUserByEmail(email);
 
-        // If the user is not found, return 404
-        if (user == null) {
-            return new ResponseEntity<>(Map.of("message", "User not found"), HttpStatus.NOT_FOUND);
+        // Check if user exists and is a Client
+        if (user == null || !(user instanceof Client client)) {
+            return new ResponseEntity<>(Map.of("message", "Client not found"), HttpStatus.NOT_FOUND);
         }
 
-        // Verify if the provided password matches the stored password
+        // Verify password
         if (!userService.verifyPassword(motdepasse, user.getMotdepasse())) {
             return new ResponseEntity<>(Map.of("message", "Invalid credentials"), HttpStatus.UNAUTHORIZED);
         }
 
-        // Simple response with a success message (You can add JWT here if needed)
-        return ResponseEntity.ok(Map.of("message", "Login successful"));
+        // Build the response JSON manually without exposing password or relations
+        Map<String, Object> clientData = new HashMap<>();
+        clientData.put("idUser", client.getIdUser());
+        clientData.put("nom", client.getNom());
+        clientData.put("prenom", client.getPrenom());
+        clientData.put("age", client.getAge());
+        clientData.put("tlf", client.getTlf());
+        clientData.put("email", client.getEmail());
+        clientData.put("statut", client.getStatut());
+        clientData.put("photodeprofil", client.getPhotodeprofil());
+        clientData.put("adresse", client.getAdresse());
+        clientData.put("codePostale", client.getCodePostale());
+        clientData.put("zip", client.getZip());
+
+        return ResponseEntity.ok(clientData);
     }
+
 }
