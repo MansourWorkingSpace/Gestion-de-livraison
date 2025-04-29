@@ -1,23 +1,18 @@
 package com.example.GestionDeLivraison.Model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
 @Table(name = "livreur")
-public class Livreur {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idLivreur")
-    private Integer idLivreur;
+@PrimaryKeyJoinColumn(name = "id_user")
+public class Livreur extends User {
 
     @Column(name = "tarif_livraison")
-    private Double tarifLivraison;  // Utilisation de Double sans precision/scale
+    private Double tarifLivraison;
 
     @Column(name = "tarif_retour")
-    private Double tarifRetour;     // Utilisation de Double sans precision/scale
+    private Double tarifRetour;
 
     @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContratCL> contratsCommercants;
@@ -28,18 +23,6 @@ public class Livreur {
     @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DashboardL> commandesLivrees;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "idUser")
-    private User user;
-
-    // Getters et Setters
-    public Integer getIdLivreur() {
-        return idLivreur;
-    }
-
-    public void setIdLivreur(Integer idLivreur) {
-        this.idLivreur = idLivreur;
-    }
 
     public Double getTarifLivraison() {
         return tarifLivraison;
@@ -57,13 +40,27 @@ public class Livreur {
         this.tarifRetour = tarifRetour;
     }
 
-    public User getUser() {
-        return user;
+    public List<ContratCL> getContratsCommercants() {
+        return contratsCommercants;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setContratsCommercants(List<ContratCL> contratsCommercants) {
+        this.contratsCommercants = contratsCommercants;
     }
 
-    // ... autres getters/setters
+    public List<AvisLivreur> getAvisCommercants() {
+        return avisCommercants;
+    }
+
+    public void setAvisCommercants(List<AvisLivreur> avisCommercants) {
+        this.avisCommercants = avisCommercants;
+    }
+
+    public List<DashboardL> getCommandesLivrees() {
+        return commandesLivrees;
+    }
+
+    public void setCommandesLivrees(List<DashboardL> commandesLivrees) {
+        this.commandesLivrees = commandesLivrees;
+    }
 }

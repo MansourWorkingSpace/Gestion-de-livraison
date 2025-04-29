@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         if (!livreurRepository.existsById(livreurId)) {
             throw new EntityNotFoundException("Livreur non trouvé");
         }
-        return avisLivreurRepository.findByLivreur_IdLivreur(livreurId);
+        return avisLivreurRepository.findByLivreur_IdUser(Long.valueOf(livreurId));
     }
 
     @Override

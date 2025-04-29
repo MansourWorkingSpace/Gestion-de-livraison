@@ -3,6 +3,7 @@ package com.example.GestionDeLivraison.Model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "commande")
@@ -38,8 +39,8 @@ public class Commande {
     @Lob
     public byte[] qrCode; // QR code associé à la commande
 
-    @OneToOne(mappedBy = "commande")
-    public DashboardL dashboardL; // Relation avec le dashboard
+    @OneToMany(mappedBy = "commande")
+    private List<DashboardL> dashboardL; // Relation avec le dashboard
 
     // Constructeur par défaut (requis pour JPA)
     public Commande() {}
