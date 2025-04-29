@@ -29,8 +29,8 @@ public class AuthController {
 
         client.setStatut(RoleUser.client);  // Set role for Client
         userService.saveUser(client);  // Save the client
-        return ResponseEntity.ok("Client registered successfully");
-    }
+        String jsonResponse = "{\"message\":\"Client registered successfully\"}";
+        return ResponseEntity.ok(jsonResponse);    }
 
     // 🟢 Register Commercant
     @PostMapping("/registerCommercant")
@@ -41,8 +41,8 @@ public class AuthController {
 
         commercant.setStatut(RoleUser.commercant);  // Set role for Commercant
         userService.saveUser(commercant);  // Save the commercant
-        return ResponseEntity.ok("Commercant registered successfully");
-    }
+        String jsonResponse = "{\"message\":\"Commercant registered successfully\"}";
+        return ResponseEntity.ok(jsonResponse);    }
 
     // 🟢 Register Livreur
     @PostMapping("/registerLivreur")
@@ -53,8 +53,8 @@ public class AuthController {
 
         livreur.setStatut(RoleUser.livreur);  // Set role for Livreur
         userService.saveUser(livreur);  // Save the livreur
-        return ResponseEntity.ok("Livreur registered successfully");
-    }
+        String jsonResponse = "{\"message\":\"Livreur registered successfully\"}";
+        return ResponseEntity.ok(jsonResponse);    }
 
     // 🔑 Login (Shared for all user types)
     @PostMapping("/login")
