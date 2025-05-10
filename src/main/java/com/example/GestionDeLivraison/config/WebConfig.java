@@ -14,12 +14,11 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("http://localhost:4200") // Allow requests from Angular app
+                        .allowedOrigins("*") // Allow requests from any origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific HTTP methods
-                        .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(true); // Allow cookies if needed
+                        .allowedHeaders("*"); // Allow all headers
+                // Note: allowCredentials(true) is removed as it's incompatible with allowedOrigins("*")
             }
         };
     }
 }
-
