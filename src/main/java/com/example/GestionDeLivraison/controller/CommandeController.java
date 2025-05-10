@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/commandes")
-@CrossOrigin(origins = "*")
 public class CommandeController {
 
     @Autowired
