@@ -20,5 +20,6 @@ public class WebConfig {
                 // Note: allowCredentials(true) is removed as it's incompatible with allowedOrigins("*")
             }
         };
+
     }
 }
