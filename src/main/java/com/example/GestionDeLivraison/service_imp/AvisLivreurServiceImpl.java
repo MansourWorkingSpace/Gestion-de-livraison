@@ -2,6 +2,7 @@ package com.example.GestionDeLivraison.service_imp;
 
 import com.example.GestionDeLivraison.Model.AvisLivreur;
 import com.example.GestionDeLivraison.repository.AvisLivreurRepository;
+import com.example.GestionDeLivraison.service.AvisLivreurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AvisLivreurServiceImpl {
+public class AvisLivreurServiceImpl implements AvisLivreurService {
     private final AvisLivreurRepository avisLivreurRepository;
 
     @Autowired
@@ -24,6 +25,6 @@ public class AvisLivreurServiceImpl {
 
     @Override
     public Optional<AvisLivreur> getAvisById(Integer id) {
-        return avisLivreurRepository.findById(id);
+        return avisLivreurRepository.findById((long)id);
     }
 }
