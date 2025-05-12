@@ -1,7 +1,8 @@
-package com.example.GestionDeLivraison.service;
+package com.example.GestionDeLivraison.service_imp;
 
 import com.example.GestionDeLivraison.Model.AvisProduit;
 import com.example.GestionDeLivraison.repository.AvisProduitRepository;
+import com.example.GestionDeLivraison.service.AvisProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
