@@ -25,7 +25,7 @@ public class AuthController {
             return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
-        client.setStatut(RoleUser.client);  // Set role for Client
+        client.setStatut(RoleUser.CLIENT);  // Set role for Client
         userService.saveUser(client);  // Save the client
         String jsonResponse = "{\"message\":\"Client registered successfully\"}";
         return ResponseEntity.ok(jsonResponse);    }
@@ -37,7 +37,7 @@ public class AuthController {
             return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
-        commercant.setStatut(RoleUser.commercant);  // Set role for Commercant
+        commercant.setStatut(RoleUser.COMMERCANT);  // Set role for Commercant
         userService.saveUser(commercant);  // Save the commercant
         String jsonResponse = "{\"message\":\"Commercant registered successfully\"}";
         return ResponseEntity.ok(jsonResponse);    }
@@ -49,7 +49,7 @@ public class AuthController {
             return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
-        livreur.setStatut(RoleUser.livreur);  // Set role for Livreur
+        livreur.setStatut(RoleUser.LIVREUR);  // Set role for Livreur
         userService.saveUser(livreur);  // Save the livreur
         String jsonResponse = "{\"message\":\"Livreur registered successfully\"}";
         return ResponseEntity.ok(jsonResponse);    }
@@ -76,7 +76,7 @@ public class AuthController {
         userData.put("nom", user.getNom());
         userData.put("prenom", user.getPrenom());
         userData.put("email", user.getEmail());
-        userData.put("statut", user.getStatut().toString());
+        userData.put("statut", user.getStatutEnum().toString());
 
         // Add specific data based on user type
         if (user instanceof Client) {

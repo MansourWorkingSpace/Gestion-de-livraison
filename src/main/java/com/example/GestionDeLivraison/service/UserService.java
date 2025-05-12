@@ -3,7 +3,9 @@ package com.example.GestionDeLivraison.service;
 import com.example.GestionDeLivraison.Model.AvisLivreur;
 import com.example.GestionDeLivraison.Model.Livreur;
 import com.example.GestionDeLivraison.Model.User;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserService {
@@ -18,4 +20,5 @@ public interface UserService {
     void saveUser(User user);
     User getUserByEmail(String email);
     public boolean verifyPassword(String rawPassword, String storedPassword);
+
 }

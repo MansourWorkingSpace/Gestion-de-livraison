@@ -4,24 +4,25 @@ import com.example.GestionDeLivraison.repository.*;
 import com.example.GestionDeLivraison.service.UserService;
 import com.example.GestionDeLivraison.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
-    private BCryptPasswordEncoder  encoder = new BCryptPasswordEncoder();
+public class UserServiceImpl implements UserService {
+    private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
     private final UserRepository userRepository;
     private final LivreurRepository livreurRepository;
     private final CommercantRepository commercantRepository;
     private final AvisLivreurRepository avisLivreurRepository;
+    private RoleUser role;
 
 
     @Autowired
@@ -128,8 +129,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(rawPassword, storedPassword);
     }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
+
+
+
+
 }
