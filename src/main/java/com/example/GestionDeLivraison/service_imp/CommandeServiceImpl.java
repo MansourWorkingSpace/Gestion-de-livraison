@@ -15,6 +15,12 @@ public class CommandeServiceImpl implements CommandeService {
 
     private final CommandeRepository commandeRepository;
 
+    @Override
+    public Commande saveCommande(Commande commande) {
+        return commandeRepository.save(commande);
+    }
+
+
     @Autowired
     public CommandeServiceImpl(CommandeRepository commandeRepository) {
         this.commandeRepository = commandeRepository;

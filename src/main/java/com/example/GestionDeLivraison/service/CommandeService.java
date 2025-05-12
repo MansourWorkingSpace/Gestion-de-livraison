@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommandeService {
+
+    Commande saveCommande(Commande commande); // Crée une nouvelle commande
+
     List<Commande> listAllCommandes(); // Liste toutes les commandes
     Optional<Commande> getCommandeById(int idCmd); // Récupère une commande par ID
     Commande updateStatutCommande(int idCmd, StatutCommande nouveauStatut); // Met à jour le statut d'une commande
