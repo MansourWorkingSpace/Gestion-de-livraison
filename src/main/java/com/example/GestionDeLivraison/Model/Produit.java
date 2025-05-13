@@ -1,5 +1,6 @@
 package com.example.GestionDeLivraison.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -24,9 +25,11 @@ public class Produit {
     private Commercant commercant;
 
     @OneToMany(mappedBy = "produit")
+    @JsonIgnore
     private List<Commande> commandes;
 
     @OneToMany(mappedBy = "produit")
+    @JsonIgnore
     private List<AvisProduit> avis;
 
     public Integer getIdProd() {
