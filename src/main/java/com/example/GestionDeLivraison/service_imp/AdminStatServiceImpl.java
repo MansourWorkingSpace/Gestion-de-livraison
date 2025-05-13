@@ -2,9 +2,9 @@ package com.example.GestionDeLivraison.service_imp;
 
 import com.example.GestionDeLivraison.repository.AdminStatRepository;
 import com.example.GestionDeLivraison.service.AdminStatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ public class AdminStatServiceImpl implements AdminStatService {
 
     private final AdminStatRepository adminStatRepository;
 
+    @Autowired
     public AdminStatServiceImpl(AdminStatRepository adminStatRepository) {
         this.adminStatRepository = adminStatRepository;
     }
@@ -23,10 +24,21 @@ public class AdminStatServiceImpl implements AdminStatService {
     public Map<String, Object> getAdminDashboardStats() {
         Map<String, Object> stats = new HashMap<>();
 
+        // Basic statistics
         stats.put("totalClients", adminStatRepository.countTotalClients());
         stats.put("totalOrders", adminStatRepository.countTotalDeliveredOrders());
         stats.put("totalRevenue", adminStatRepository.calculateTotalRevenue());
-        stats.put("cityDistribution", processCityData(adminStatRepository.getCityDistribution()));
+
+        // City distribution
+        List<Map<String, Object>> cityDistribution = adminStatRepository.getCityDistribution();
+        Map<String, Object> cityStats = cityDistribution.stream()
+                .collect(Collectors.toMap(
+                        item -> (String) item.get("city"),
+                        item -> item.get("count")
+                ));
+        stats.put("cityDistribution", cityStats);
+
+        // Top products
         stats.put("topProducts", adminStatRepository.getTopProducts());
 
         return stats;
@@ -34,24 +46,16 @@ public class AdminStatServiceImpl implements AdminStatService {
 
     @Override
     public Map<String, Object> getMonthlyStatistics(int year) {
-        return processMonthlyData(adminStatRepository.getMonthlyStats(year));
-    }
-
-    private Map<String, Object> processCityData(List<Map<String, Object>> rawData) {
-        return rawData.stream()
-                .collect(Collectors.toMap(
-                        item -> (String) item.get("city"),
-                        item -> item.get("count")
-                ));
-    }
-
-    private Map<String, Object> processMonthlyData(List<Map<String, Object>> rawData) {
+        List<Map<String, Object>> monthlyData = adminStatRepository.getMonthlyStats(year);
         Map<String, Object> monthlyStats = new HashMap<>();
+
+        // Initialize all months with 0
         for (int i = 1; i <= 12; i++) {
-            monthlyStats.put(String.valueOf(i), 0);
+            monthlyStats.put(String.valueOf(i), 0L);
         }
 
-        rawData.forEach(item -> {
+        // Fill in actual data
+        monthlyData.forEach(item -> {
             String month = String.valueOf(item.get("month"));
             monthlyStats.put(month, item.get("count"));
         });

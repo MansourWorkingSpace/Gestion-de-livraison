@@ -3,6 +3,7 @@ package com.example.GestionDeLivraison.repository;
 import com.example.GestionDeLivraison.Model.Commande;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -21,19 +22,27 @@ public interface AdminStatRepository extends JpaRepository<Commande, Integer> {
     Long countTotalDeliveredOrders();
 
     // Revenu total
-    @Query("SELECT SUM(c.prixTotale) FROM Commande c WHERE c.statut = 'done'")
+    @Query("SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c WHERE c.statut = 'done'")
     Double calculateTotalRevenue();
 
     // Statistiques mensuelles
     @Query("SELECT FUNCTION('MONTH', c.dateCmd) as month, COUNT(c) as count " +
-            "FROM Commande c WHERE YEAR(c.dateCmd) = :year GROUP BY FUNCTION('MONTH', c.dateCmd)")
-    List<Map<String, Object>> getMonthlyStats(int year);
+            "FROM Commande c " +
+            "WHERE FUNCTION('YEAR', c.dateCmd) = :year " +
+            "GROUP BY FUNCTION('MONTH', c.dateCmd)")
+    List<Map<String, Object>> getMonthlyStats(@Param("year") int year);
 
     // Répartition par ville
-    @Query("SELECT c.client.codePostale as city, COUNT(c) as count FROM Commande c GROUP BY c.client.codePostale")
+    @Query("SELECT c.client.codePostale as city, COUNT(c) as count " +
+           "FROM Commande c " +
+           "GROUP BY c.client.codePostale")
     List<Map<String, Object>> getCityDistribution();
 
     // Top produits
-    @Query("SELECT p.nomProd as name, COUNT(c) as count FROM Commande c JOIN c.produit p GROUP BY p.nomProd ORDER BY COUNT(c) DESC")
+    @Query("SELECT p.nomProd as name, COUNT(c) as count " +
+           "FROM Commande c JOIN c.produit p " +
+           "GROUP BY p.nomProd " +
+           "ORDER BY COUNT(c) DESC " +
+           "LIMIT 10")
     List<Map<String, Object>> getTopProducts();
 }
