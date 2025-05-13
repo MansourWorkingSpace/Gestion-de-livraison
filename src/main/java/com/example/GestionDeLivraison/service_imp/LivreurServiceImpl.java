@@ -3,13 +3,17 @@ package com.example.GestionDeLivraison.service_imp;
 import com.example.GestionDeLivraison.Model.Livreur;
 import com.example.GestionDeLivraison.repository.LivreurRepository;
 import com.example.GestionDeLivraison.service.LivreurService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class LivreurServiceImpl implements LivreurService {
 
     private final LivreurRepository livreurRepository;
@@ -62,5 +66,22 @@ public class LivreurServiceImpl implements LivreurService {
     @Override
     public List<Livreur> searchLivreur(String query) {
         return livreurRepository.findByNomContainingOrPrenomContainingOrEmailContaining(query, query, query);
+    }
+
+    @Override
+    public List<Map<String, String>> getAllDeliveryAgents() {
+        try {
+            List<Livreur> livreurs = livreurRepository.findAll();
+            return livreurs.stream()
+                    .map(livreur -> Map.of(
+                            "id", livreur.getIdUser().toString(),
+                            "name", livreur.getNom() + " " + livreur.getPrenom()
+                    ))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.err.println("Error retrieving livreurs: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
