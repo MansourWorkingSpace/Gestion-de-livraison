@@ -23,4 +23,28 @@ public class Message {
     private LocalDateTime date;
 
     // Getters and Setters
+    public Integer getIdMe() {
+        return idMe;
+    }
+    public void setIdMe(Integer idMe) {
+        this.idMe = idMe;
+    }
+    public User getUserEnvoi() {
+        return userEnvoi;
+    }
+    public void setUserEnvoi(User userEnvoi) {
+        this.userEnvoi = userEnvoi;
+    }
+    public User getUserRecu() {
+        return userRecu;
+    }
+    public String getMessage() {
+        return message;
+    }
+    // Getter pour date
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+
 }

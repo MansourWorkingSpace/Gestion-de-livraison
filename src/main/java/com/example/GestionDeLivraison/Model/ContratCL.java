@@ -23,4 +23,45 @@ public class ContratCL {
     private LocalDate dateFin;
 
     // Getters and Setters
+    // Getters
+    public Integer getIdCCL() {
+        return idCCL;
+    }
+
+    public Commercant getCommercant() {
+        return commercant;
+    }
+
+    public Livreur getLivreur() {
+        return livreur;
+    }
+
+    public LocalDate getDateDebut() {
+        return dateDebut;
+    }
+
+    public LocalDate getDateFin() {
+        return dateFin;
+    }
+
+    // Setters
+    public void setIdCCL(Integer idCCL) {
+        this.idCCL = idCCL;
+    }
+
+    public void setCommercant(Commercant commercant) {
+        this.commercant = commercant;
+    }
+
+    public void setLivreur(Livreur livreur) {
+        this.livreur = livreur;
+    }
+
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
+    }
 }

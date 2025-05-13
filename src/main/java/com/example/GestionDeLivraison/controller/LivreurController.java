@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/livreurs")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LivreurController {
 
     private final LivreurService livreurService;
@@ -56,5 +58,10 @@ public class LivreurController {
     public ResponseEntity<List<Livreur>> searchLivreurs(@RequestParam String query) {
         List<Livreur> livreurs = livreurService.searchLivreur(query);
         return new ResponseEntity<>(livreurs, HttpStatus.OK);
+    }
+
+    @GetMapping("/delivery-agents")
+    public ResponseEntity<List<Map<String, String>>> getDeliveryAgents() {
+        return ResponseEntity.ok(livreurService.getAllDeliveryAgents());
     }
 }

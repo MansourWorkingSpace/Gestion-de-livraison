@@ -26,4 +26,29 @@ public class Commercant extends User {
     private List<AvisLivreur> avisLivreurs;
 
     // Getters and Setters
+    public Commercant() {}
+
+    public List<ContratCL> getContratsLivreurs() {
+        return contratsLivreurs;
+    }
+
+    public void setContratsLivreurs(List<ContratCL> contratsLivreurs) {
+        this.contratsLivreurs = contratsLivreurs;
+    }
+
+    public List<AvisLivreur> getAvisLivreurs() {
+        return avisLivreurs;
+    }
+
+    public void setAvisLivreurs(List<AvisLivreur> avisLivreurs) {
+        this.avisLivreurs = avisLivreurs;
+    }
+
+    public List<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
+    }
 }

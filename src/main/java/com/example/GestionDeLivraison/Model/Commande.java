@@ -2,6 +2,8 @@ package com.example.GestionDeLivraison.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Table(name = "commande")
 public class Commande {
@@ -60,4 +62,138 @@ public class Commande {
         this.tlf = tlf;
         this.qrCode = qrCode;
     }
+    // Getters and Setters
+    public Integer getIdCmd() {
+        return idCmd;
+    }
+
+    public void setIdCmd(Integer idCmd) {
+        this.idCmd = idCmd;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getCodePostale() {
+        return codePostale;
+    }
+
+    public void setCodePostale(String codePostale) {
+        this.codePostale = codePostale;
+    }
+
+    public StatutCommande getStatut() {
+        return statut;
+    }
+
+    public void setStatut(StatutCommande statut) {
+        this.statut = statut;
+    }
+
+    public LocalDateTime getDateCmd() {
+        return dateCmd;
+    }
+
+    public void setDateCmd(LocalDateTime dateCmd) {
+        this.dateCmd = dateCmd;
+    }
+
+    public Boolean getEstpayee() {
+        return estpayee;
+    }
+
+    public void setEstpayee(Boolean estpayee) {
+        this.estpayee = estpayee;
+    }
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrixht() {
+        return prixht;
+    }
+
+    public void setPrixht(Double prixht) {
+        this.prixht = prixht;
+    }
+
+    public Double getPrixUnitaire() {
+        return prixUnitaire;
+    }
+
+    public void setPrixUnitaire(Double prixUnitaire) {
+        this.prixUnitaire = prixUnitaire;
+    }
+
+    public Double getPrixTotale() {
+        return prixTotale;
+    }
+
+    public void setPrixTotale(Double prixTotale) {
+        this.prixTotale = prixTotale;
+    }
+
+    public String getTlf() {
+        return tlf;
+    }
+
+    public void setTlf(String tlf) {
+        this.tlf = tlf;
+    }
+
+    public byte[] getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(byte[] qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public DashboardL getDashboardL() {
+        return dashboardL;
+    }
+
+    public void setDashboardL(DashboardL dashboardL) {
+        this.dashboardL = dashboardL;
+    }
+    public Commande(Integer idCmd, StatutCommande statut, LocalDateTime dateCmd, Double prixTotale,
+                    String adresse, String codePostale, Client client, Produit produit,
+                    DashboardL dashboardL) {
+        this.idCmd = idCmd;
+        this.statut = statut;
+        this.dateCmd = dateCmd;
+        this.prixTotale = prixTotale;
+        this.adresse = adresse;
+        this.codePostale = codePostale;
+        this.client = client;
+        this.produit = produit;
+        this.dashboardL = dashboardL;
+    }
+
 }
