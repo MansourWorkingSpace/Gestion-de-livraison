@@ -1,6 +1,7 @@
 package com.example.GestionDeLivraison.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -18,9 +19,11 @@ public class Client extends User {
     private String zip;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<Commande> commandes;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<AvisProduit> avisProduits;
 
     // Getters and Setters for adresse, codePostale, and zip

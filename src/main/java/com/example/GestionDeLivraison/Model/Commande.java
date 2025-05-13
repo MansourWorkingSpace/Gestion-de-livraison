@@ -25,6 +25,7 @@ public class Commande {
 
     @ManyToOne
     @JoinColumn(name = "id_prod", nullable = false)
+
     public Produit produit; // Produit commandé
 
     public Integer quantity; // Quantité commandée
@@ -37,6 +38,7 @@ public class Commande {
     public byte[] qrCode; // QR code associé à la commande
 
     @OneToOne(mappedBy = "commande")
+    @JsonIgnore
     public DashboardL dashboardL; // Relation avec le dashboard
 
     // Constructeur par défaut (requis pour JPA)
@@ -59,5 +61,65 @@ public class Commande {
         this.prixTotale = prixTotale;
         this.tlf = tlf;
         this.qrCode = qrCode;
+    }
+
+    public Integer getIdCmd() {
+        return idCmd;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public String getCodePostale() {
+        return codePostale;
+    }
+
+    public StatutCommande getStatut() {
+        return statut;
+    }
+
+    public LocalDateTime getDateCmd() {
+        return dateCmd;
+    }
+
+    public Boolean getEstpayee() {
+        return estpayee;
+    }
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Double getPrixht() {
+        return prixht;
+    }
+
+    public Double getPrixUnitaire() {
+        return prixUnitaire;
+    }
+
+    public Double getPrixTotale() {
+        return prixTotale;
+    }
+
+    public String getTlf() {
+        return tlf;
+    }
+
+    public byte[] getQrCode() {
+        return qrCode;
+    }
+
+    public DashboardL getDashboardL() {
+        return dashboardL;
     }
 }

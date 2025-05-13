@@ -84,6 +84,7 @@ public class AuthController {
             userData.put("adresse", client.getAdresse());
             userData.put("codePostale", client.getCodePostale());
             userData.put("zip", client.getZip());
+
         } else if (user instanceof Livreur) {
             Livreur livreur = (Livreur) user;
             userData.put("tarifLivraison", livreur.getTarifLivraison());

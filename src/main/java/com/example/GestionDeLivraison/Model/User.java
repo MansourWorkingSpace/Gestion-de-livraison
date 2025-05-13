@@ -1,5 +1,6 @@
 package com.example.GestionDeLivraison.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,9 +31,11 @@ public class User implements UserDetails {
     private String photodeprofil;
 
     @OneToMany(mappedBy = "userEnvoi")
+    @JsonIgnore
     private List<Message> messagesEnvoyes;
 
     @OneToMany(mappedBy = "userRecu")
+    @JsonIgnore
     private List<Message> messagesRecus;
 
     // Méthodes setters
@@ -80,6 +83,7 @@ public class User implements UserDetails {
     public void setMessagesRecus(List<Message> messagesRecus) {
         this.messagesRecus = messagesRecus;
     }
+
 
     // Méthodes getters
     public Integer getIdUser() {
