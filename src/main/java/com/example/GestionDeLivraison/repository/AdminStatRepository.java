@@ -18,11 +18,11 @@ public interface AdminStatRepository extends JpaRepository<Commande, Integer> {
     Long countTotalClients();
 
     // Nombre total de commandes livrées
-    @Query("SELECT COUNT(c) FROM Commande c WHERE c.statut = 'done'")
+    @Query("SELECT COUNT(c) FROM Commande c WHERE c.statut = 'livre'")
     Long countTotalDeliveredOrders();
 
     // Revenu total
-    @Query("SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c WHERE c.statut = 'done'")
+    @Query("SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c WHERE c.statut = 'livre'")
     Double calculateTotalRevenue();
 
     // Statistiques mensuelles

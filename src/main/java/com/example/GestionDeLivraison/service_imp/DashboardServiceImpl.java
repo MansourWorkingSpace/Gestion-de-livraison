@@ -20,7 +20,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class DashboardServiceImpl implements DashboardService {
+public class
+DashboardServiceImpl implements DashboardService {
 
     @PersistenceContext
     private EntityManager entityManager;
