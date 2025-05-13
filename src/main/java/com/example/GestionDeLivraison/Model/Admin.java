@@ -1,5 +1,6 @@
 package com.example.GestionDeLivraison.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -12,6 +13,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "id_user")
 public class Admin extends User {
     @OneToMany(mappedBy = "admin")
+    @JsonIgnore
     private List<ContratCA> contratsCommercants;
 
     // Getters and Setters

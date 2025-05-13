@@ -17,12 +17,15 @@ public class Commercant extends User {
     private List<Produit> produits;
 
     @OneToMany(mappedBy = "commercant")
+    @JsonIgnore
     private List<ContratCL> contratsLivreurs;
 
     @OneToMany(mappedBy = "commercant")
+    @JsonIgnore
     private List<ContratCA> contratsAdmins;
 
     @OneToMany(mappedBy = "commercant")
+    @JsonIgnore
     private List<AvisLivreur> avisLivreurs;
 
     // Getters and Setters

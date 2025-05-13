@@ -1,8 +1,8 @@
 package com.example.GestionDeLivraison.Model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "commande")
@@ -39,6 +39,7 @@ public class Commande {
     public byte[] qrCode; // QR code associé à la commande
 
     @OneToOne(mappedBy = "commande")
+    @JsonIgnore
     public DashboardL dashboardL; // Relation avec le dashboard
 
     // Constructeur par défaut (requis pour JPA)
@@ -62,6 +63,7 @@ public class Commande {
         this.tlf = tlf;
         this.qrCode = qrCode;
     }
+
     // Getters and Setters
     public Integer getIdCmd() {
         return idCmd;
@@ -182,6 +184,7 @@ public class Commande {
     public void setDashboardL(DashboardL dashboardL) {
         this.dashboardL = dashboardL;
     }
+
     public Commande(Integer idCmd, StatutCommande statut, LocalDateTime dateCmd, Double prixTotale,
                     String adresse, String codePostale, Client client, Produit produit,
                     DashboardL dashboardL) {

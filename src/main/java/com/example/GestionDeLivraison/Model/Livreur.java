@@ -1,5 +1,6 @@
 package com.example.GestionDeLivraison.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -15,12 +16,15 @@ public class Livreur extends User {
     private Double tarifRetour;
 
     @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ContratCL> contratsCommercants;
 
     @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<AvisLivreur> avisCommercants;
 
     @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<DashboardL> commandesLivrees;
 
 
