@@ -17,6 +17,14 @@ public class CommandeController {
     @Autowired
     private CommandeService commandeService;
 
+    @PostMapping("/add")
+    public ResponseEntity<Commande> addCommande(@RequestBody Commande commande) {
+        Commande savedCommande = commandeService.saveCommande(commande);
+        return ResponseEntity.ok(savedCommande);
+    }
+
+
+
     // Liste toutes les commandes
     @GetMapping("/all")
     public ResponseEntity<List<Commande>> getAllCommandes() {

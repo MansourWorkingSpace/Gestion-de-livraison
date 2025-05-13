@@ -1,23 +1,29 @@
 package com.example.GestionDeLivraison.service_imp;
-
 import com.example.GestionDeLivraison.Model.*;
 import com.example.GestionDeLivraison.repository.*;
 import com.example.GestionDeLivraison.service.UserService;
 import com.example.GestionDeLivraison.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
     private final UserRepository userRepository;
     private final LivreurRepository livreurRepository;
     private final CommercantRepository commercantRepository;
     private final AvisLivreurRepository avisLivreurRepository;
+    private RoleUser role;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -107,6 +113,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
+
+        user.setMotdepasse(encoder.encode(user.getMotdepasse()));
         userRepository.save(user);
     }
 
@@ -118,8 +126,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyPassword(String rawPassword, String storedPassword) {
-        // No hashing or comparison needed if you are using plain text passwords
-        return rawPassword.equals(storedPassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(rawPassword, storedPassword);
     }
+
+
+
 
 }
