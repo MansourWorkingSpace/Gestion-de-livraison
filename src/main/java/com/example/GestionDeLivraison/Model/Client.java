@@ -79,4 +79,15 @@ public class Client extends User {
                 ", avisProduits=" + avisProduits +
                 "} " + super.toString();
     }
+
+    public Client(Integer idUser, String nom, String prenom, String email, String tlf,
+                  String adresse, String codePostale, RoleUser statut) {
+        super(idUser, nom, prenom, email, tlf, statut);
+        this.adresse = adresse;
+        this.codePostale = codePostale;
+    }
+    public Client() {
+        super(); // Call User default constructor
+    }
+
 }

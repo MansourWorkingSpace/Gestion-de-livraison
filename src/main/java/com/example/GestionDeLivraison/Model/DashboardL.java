@@ -32,4 +32,9 @@ public class DashboardL {
     public void setCommande(Commande commande) {
         this.commande = commande;
     }
+
+    public String getId() {
+        return livreur.getIdUser() + "-" + commande.getIdCmd();
+    }
+
 }

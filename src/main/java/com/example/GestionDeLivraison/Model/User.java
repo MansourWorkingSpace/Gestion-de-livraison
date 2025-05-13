@@ -150,5 +150,18 @@ public class User implements UserDetails {
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true;}
 
+    public User(){}
+    public User(Integer idUser, String nom, String prenom, String email, String tlf, RoleUser statut) {
+        this.idUser = idUser;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.tlf = tlf;
+        this.statut = statut.name();
+    }
+    public String getStatut() {
+        return statut;
+    }
+
 }
 
