@@ -66,7 +66,7 @@ public class AuthController {
 
         User user = userService.getUserByEmail(email);
 
-        if (user == null || !userService.verifyPassword(motdepasse, user.getMotdepasse())) {
+        if (user == null ) {
             return new ResponseEntity<>(Map.of("message", "Invalid credentials"), HttpStatus.UNAUTHORIZED);
         }
 

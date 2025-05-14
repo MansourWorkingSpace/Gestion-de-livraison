@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
 
-        user.setMotdepasse(encoder.encode(user.getMotdepasse()));
+        /*user.setMotdepasse(encoder.encode(user.getMotdepasse()));*/
         userRepository.save(user);
     }
 
@@ -124,11 +124,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
+    /*@Override
     public boolean verifyPassword(String rawPassword, String storedPassword) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(rawPassword, storedPassword);
-    }
+    }*/
 
 
 
