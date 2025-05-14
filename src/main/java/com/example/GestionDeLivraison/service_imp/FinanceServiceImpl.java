@@ -73,10 +73,8 @@ public class FinanceServiceImpl implements FinanceService {
                             c.getDateCmd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : "N/A");
                     transactionMap.put("clientName", c.getClient() != null ?
                             c.getClient().getNom() + " " + c.getClient().getPrenom() : "Unknown");
-                    transactionMap.put("type", "Order");
                     transactionMap.put("amount", c.getPrixTotale() != null ? c.getPrixTotale() : 0.0);
                     transactionMap.put("status", c.getEstpayee() ? "Completed" : "Pending");
-                    transactionMap.put("paymentMethod", c.getTlf() != null ? "Card" : "Unknown");
                     transactionMap.put("reference", "REF" + c.getIdCmd());
                     return transactionMap;
                 })

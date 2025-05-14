@@ -1,19 +1,17 @@
 package com.example.GestionDeLivraison.dto;
 
 public class DashboardLDTO {
-
-    private Integer livreurId;
-    private Integer commandeId;
-    private String id;
+    private Integer livreurId;  // ID du livreur
+    private Integer commandeId; // ID de la commande
 
     public DashboardLDTO() {}
 
     public DashboardLDTO(com.example.GestionDeLivraison.Model.DashboardL dashboardL) {
         this.livreurId = dashboardL.getLivreur().getIdUser();
         this.commandeId = dashboardL.getCommande().getIdCmd();
-        this.id = dashboardL.getId();  // ID combiné
     }
 
+    // Getters et Setters
     public Integer getLivreurId() {
         return livreurId;
     }
@@ -28,13 +26,5 @@ public class DashboardLDTO {
 
     public void setCommandeId(Integer commandeId) {
         this.commandeId = commandeId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }
