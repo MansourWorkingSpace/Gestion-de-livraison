@@ -2,8 +2,8 @@ package com.example.GestionDeLivraison.service_imp;
 import com.example.GestionDeLivraison.Model.Client;
 import com.example.GestionDeLivraison.dto.ClientDTO;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
+
 import com.example.GestionDeLivraison.Model.Commande;
 import com.example.GestionDeLivraison.Model.StatutCommande;
 import com.example.GestionDeLivraison.dto.CommandeDTO;
@@ -12,9 +12,9 @@ import com.example.GestionDeLivraison.service.DashboardService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -135,30 +135,133 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<Map<String, Object>> getStatsCards() {
-        Long totalLivraisons = entityManager.createQuery(
-                        "SELECT COUNT(d) FROM DashboardL d", Long.class)
-                .getSingleResult();
-
-        Long totalCommandes = entityManager.createQuery(
-                        "SELECT COUNT(c) FROM Commande c", Long.class)
-                .getSingleResult();
-
-        Double revenuTotal = entityManager.createQuery(
-                        "SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c", Double.class)
-                .getSingleResult();
-
         List<Map<String, Object>> cartes = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        try {
+            // Dates
+            LocalDate firstDayCurrentMonth = today.withDayOfMonth(1);
+            LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
+            LocalDate lastDayPreviousMonth = firstDayCurrentMonth.minusDays(1);
 
-        cartes.add(createCard("Total des livraisons", totalLivraisons.toString(), "truck",
-                "#4CAF50", "#E8F5E9", "#2E7D32"));
+            // Conversion à LocalDateTime
+            LocalDateTime startCurrentMonth = firstDayCurrentMonth.atStartOfDay();
+            LocalDateTime endCurrentMonth = today.atTime(LocalTime.MAX);
+            LocalDateTime startPreviousMonth = firstDayPreviousMonth.atStartOfDay();
+            LocalDateTime endPreviousMonth = lastDayPreviousMonth.atTime(LocalTime.MAX);
 
-        cartes.add(createCard("Total des commandes", totalCommandes.toString(), "shopping-cart",
-                "#2196F3", "#E3F2FD", "#1565C0"));
+            // Deliveries
+            Long currentMonthDeliveries = getCount(
+                    "SELECT COUNT(*) FROM DashboardL d WHERE d.commande.dateCmd BETWEEN :start AND :end",
+                    startCurrentMonth,
+                    endCurrentMonth
+            );
+            Long previousMonthDeliveries = getCount(
+                    "SELECT COUNT(*) FROM DashboardL d WHERE d.commande.dateCmd BETWEEN :start AND :end",
+                    startPreviousMonth,
+                    endPreviousMonth
+            );
+            Long totalLivraisons = getCount("SELECT COUNT(*) FROM DashboardL d", null, null);
 
-        cartes.add(createCard("Revenu total", String.format("%.2f TND", revenuTotal), "money-bill-wave",
-                "#FF9800", "#FFF3E0", "#EF6C00"));
+            // Orders
+            Long currentMonthOrders = getCount(
+                    "SELECT COUNT(c) FROM Commande c WHERE c.dateCmd BETWEEN :start AND :end",
+                    startCurrentMonth,
+                    endCurrentMonth
+            );
+            Long previousMonthOrders = getCount(
+                    "SELECT COUNT(c) FROM Commande c WHERE c.dateCmd BETWEEN :start AND :end",
+                    startPreviousMonth,
+                    endPreviousMonth
+            );
+            Long totalCommandes = getCount("SELECT COUNT(c) FROM Commande c", null, null);
+
+            // Revenue
+            Double currentMonthRevenue = getSum(
+                    "SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c WHERE c.dateCmd BETWEEN :start AND :end",
+                    startCurrentMonth,
+                    endCurrentMonth
+            );
+            Double previousMonthRevenue = getSum(
+                    "SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c WHERE c.dateCmd BETWEEN :start AND :end",
+                    startPreviousMonth,
+                    endPreviousMonth
+            );
+            Double revenuTotal = getSum("SELECT COALESCE(SUM(c.prixTotale), 0) FROM Commande c", null, null);
+
+            // Calcul des changements
+            String deliveriesChange = calculateChange(currentMonthDeliveries, previousMonthDeliveries);
+            String ordersChange = calculateChange(currentMonthOrders, previousMonthOrders);
+            String revenueChange = calculateChange(currentMonthRevenue, previousMonthRevenue);
+
+            // Cards
+            Map<String, Object> deliveriesCard = createCard(
+                    "Total des livraisons", totalLivraisons.toString(), "truck-fast", "#009688", "#E0F2F1", "#FFFFFF"
+            );
+            deliveriesCard.put("trend", currentMonthDeliveries >= previousMonthDeliveries ? "up" : "down");
+            deliveriesCard.put("change", deliveriesChange);
+            cartes.add(deliveriesCard);
+
+            Map<String, Object> ordersCard = createCard(
+                    "Total des commandes", totalCommandes.toString(), "shopping-cart", "#3F51B5", "#E8EAF6", "#FFFFFF"
+            );
+            ordersCard.put("trend", currentMonthOrders >= previousMonthOrders ? "up" : "down");
+            ordersCard.put("change", ordersChange);
+            cartes.add(ordersCard);
+
+            Map<String, Object> revenueCard = createCard(
+                    "Revenu total", String.format("%.2f TND", revenuTotal), "chart-line", "#673AB7", "#EDE7F6", "#FFFFFF"
+            );
+            revenueCard.put("trend", currentMonthRevenue >= previousMonthRevenue ? "up" : "down");
+            revenueCard.put("change", revenueChange);
+            cartes.add(revenueCard);
+
+        } catch (Exception e) {
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("error", "Erreur lors du chargement des statistiques: " + e.getMessage());
+            cartes.clear();
+            cartes.add(errorMap);
+        }
 
         return cartes;
+    }
+
+    private Long getCount(String jpql, LocalDateTime start, LocalDateTime end) {
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        if (start != null && end != null) {
+            query.setParameter("start", start);
+            query.setParameter("end", end);
+        }
+        return query.getSingleResult();
+    }
+
+
+    private Double getSum(String jpql, LocalDateTime start, LocalDateTime end) {
+        Query query = entityManager.createQuery(jpql);
+        if (start != null && end != null) {
+            query.setParameter("start", start);
+            query.setParameter("end", end);
+        }
+        Object result = query.getSingleResult();
+        if (result instanceof Number) {
+            return ((Number) result).doubleValue();
+        }
+        return 0.0;
+    }
+
+
+
+
+    private String calculateChange(Number current, Number previous) {
+        if (previous.doubleValue() == 0) {
+            if (current.doubleValue() == 0) {
+                return "0%";
+            }
+            return "+100%"; // When going from 0 to something, we say it's a 100% increase
+        }
+
+        double percentageChange = ((current.doubleValue() - previous.doubleValue()) / previous.doubleValue()) * 100;
+        String sign = percentageChange >= 0 ? "+" : "";
+        return sign + String.format("%.1f%%", percentageChange);
     }
     @Override
     public Map<String, Object> getMonthlyStats() {
